@@ -24,7 +24,7 @@ const VenueMarker = ({ rating = '-', tier, ratingColor, name, tag, formattedAddr
   </div>
 );
 
-const MapWithMarker = ({ center, venues, zoom }) => <GoogleMap zoom={zoom} center={center}>
+const MapWithMarker = ({ center, venues, zoom }) => <GoogleMap clickableIcons={false} zoom={zoom} center={center}>
   <Marker position={center} />
   {venues.map((venue, i) => <OverlayView mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} key={i} position={venue} >
     <VenueMarker {...venue} />
