@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   changeRadius = (event) => {
-    this.setState({ radius: event.target.value}, () => {
+    event.target.value && this.setState({ radius: event.target.value}, () => {
       this.findNearbyVenues(this.state.currentLocation);
     });
   }
