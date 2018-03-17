@@ -9,8 +9,7 @@ class App extends Component {
   state = {
     venues: [],
     radius: '500',
-    // currentLocation: {},
-    currentLocation: { lat: 40.7243, lng: -74.0018 },
+    currentLocation: {},
     loaderVisibility: false
   }
 
@@ -35,7 +34,6 @@ class App extends Component {
     }, (err) => {
       alert('Error fetching Location \n' + err.message);
     } );
-    this.findNearbyVenues({ lat: 40.7243, lng: -74.0018});    
   }
 
   changeRadius = (event) => {
