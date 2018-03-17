@@ -1,72 +1,47 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { GoogleMap, Marker, withGoogleMap, withScriptjs, OverlayView} from "react-google-maps"
-
-function getQueryString(params) {
-  var esc = encodeURIComponent;
-  return Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&');
-}
-
-const VenueMarker = ({ rating, tier, ratingColor }) => (
-  <div style={{ backgroundColor: '#' + ratingColor}} class='venue-marker'>
-    {rating}
-    {' | ' + new Array(tier).fill('$').join(' ')}
-    <span class='bottom-arrow' style={{ borderTopColor: '#' + ratingColor }}></span>
-  </div>
-);
-
-const Map = withScriptjs(withGoogleMap(({ defaultCenter, venues}) => <GoogleMap
-  defaultZoom={16}
-  center={defaultCenter}
->
-  <Marker position={defaultCenter} />
-  {venues.map((venue, i) => <OverlayView mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} key={i} position={venue} ><VenueMarker {...venue}/></OverlayView>)}
-</GoogleMap>))
+import Map from './Map';
+import Loader from 'react-loader-spinner'
+import utils from './utils';
 
 class App extends Component {
   state = {
     venues: [],
-    radius: '',
-    currentLocation: { lat: 40.7243, lng: -74.0018}
+    radius: '500',
+    // currentLocation: {},
+    currentLocation: { lat: 40.7243, lng: -74.0018 },
+    loaderVisibility: false
   }
 
-  fetchVenues = ({lat, lng}) => {
-    const qs = {
-      client_id: '1CPAVHCZ44EOTXDVRLPYJPWXBSAVTNSWGVLG0QRST32H3DNR',
-      client_secret: '51MYE2M4S0NJIBG5YOVQLTW1RS00XEV0UZD32BPYYNDYWTJI',
-      openNow: 1,
-      ll: `${lat},${lng}`,
-      v: '20170801'
-    }
-    fetch('https://api.foursquare.com/v2/venues/explore?' + getQueryString(qs))
-      .then(res => res.json())
-      .then(({response}) => {
-        const venues = response.groups[0].items.map(({venue}) => ({
-          formattedAddress: venue.location.formattedAddress,
-          contact: venue.contact,
-          name: venue.name,
-          tier: venue.price && venue.price.tier,
-          rating: venue.rating,
-          ratingColor: venue.ratingColor,
-          lat: venue.location.lat,
-          lng: venue.location.lng,
-          tag: venue.categories[0].name
-        }));
-        this.setState({venues});
+  RADIUS_OPTIONS = ['250', '500', '1000', '2000', '3000', '5000', '10000']
+
+  findNearbyVenues = ({lat, lng}) => {
+    const {radius} = this.state;
+    this.setState({ loaderVisibility: true});
+    utils.fetchVenues({lat, lng, radius})
+      .then((venues) => {
+        this.setState({ venues, loaderVisibility: false});
         console.log('hehehhe', venues);
       })
-  }
+   }
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       const currentLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
       this.setState({ currentLocation});
-      this.fetchVenues(currentLocation);
+      this.findNearbyVenues(currentLocation);
       console.log('position', position);
-    }, console.log );
-    this.fetchVenues({ lat: 40.7243, lng: -74.0018});    
+    }, (err) => {
+      alert('Error fetching Location \n' + err.message);
+    } );
+    this.findNearbyVenues({ lat: 40.7243, lng: -74.0018});    
+  }
+
+  changeRadius = (event) => {
+    this.setState({ radius: event.target.value}, () => {
+      this.findNearbyVenues(this.state.currentLocation);
+    });
   }
 
   render() {
@@ -74,19 +49,27 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <select className='radius-select' value={this.state.radius} onChange={this.changeRadius}>
+            {this.RADIUS_OPTIONS.map((radius, i) => <option key={i} value={radius}>{radius} meters</option>)}
+            <option></option>
+          </select>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          <code>Here are some things to do near you. Tap on any marker to know more.</code>
         </p>
-        {this.state.currentLocation.lat ? 
-          <Map defaultCenter={this.state.currentLocation}
-            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `400px` }} />}
+        {this.state.currentLocation.lat && this.state.currentLocation.lng  ? 
+          <Map center={this.state.currentLocation}
+            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBPC0eaoaCqPztvybllCJV03d7J0uOricc"
+            loadingElement={<div className='full-height'/>}
+            containerElement={<div className='map-element' />}
             venues={this.state.venues}
-            mapElement={<div style={{ height: `100%` }} />}></Map> : <p>fetching location</p>}
-        
+            zoom={16}
+            mapElement={<div className='full-height' />}></Map> :
+          <code>Fetching your location...</code>
+        }
+        {this.state.loaderVisibility ? <div className='loader'>
+          <Loader type="Bars" color="white" height="100" width="100"/>
+        </div> : null}
       </div>
     );
   }

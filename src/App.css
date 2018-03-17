@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 120px;
   padding: 20px;
   color: white;
 }
@@ -33,15 +33,173 @@
   position: relative;
   color: white;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  width: 70px;
+  left: -50%;
+  transform: translateY(-100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.venue-rating {
+  border: 0.5px solid white;
+  border-radius: 2px;
+  padding: 2px 5px;
+}
+
+.venue-tier {
 }
 
 .bottom-arrow {
   position: absolute;
   left: calc(50% - 5px);
-  /* transform: translateX(-50%); */
   top: 100%;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid #000;
   clear: both;
+}
+.venue-marker:hover {
+  z-index: 99;
+  background-color: orange!important;
+}
+.venue-marker:hover .bottom-arrow {
+  border-top-color: orange!important;
+}
+.venue-marker:hover .marker-details{
+  display: block;
+  padding: 10px;
+  opacity: 1;
+  visibility: visible;
+}
+.marker-details {
+  visibility: hidden;
+  position: absolute;
+  background-color: white;
+  color: black;
+  opacity: 0;
+  bottom: 100%;
+  left: calc(50% - 125px);
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  width: 250px;
+  overflow: hidden;
+  padding: 0;
+  transition: opacity 0.5s, padding 0.2s;
+}
+.venue-name {
+  font-weight: bold;
+    margin: 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e2e2e2;
+    margin-bottom: 5px;
+    display: block;
+    color: black;
+}
+.radius-select {
+  position: absolute;
+  right: 10px;
+  top: 10px;  
+}
+.marker-detail-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.marker-detail-content .left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+}
+.venue-tag {
+    padding: 5px;
+    margin: 0;
+    background-color: orange;
+    border-radius: 30px;
+    color: white;
+}
+
+.address-text {
+  margin: 5px;
+}
+
+.loader {
+      position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000042;
+}
+
+/* map */
+.map-element {
+  height: calc(100vh - 175px);
+}
+
+.full-height {
+  height: 100%;
+}
+
+/* button */
+
+
+.btn {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  background-color: #00A7F5;
+  color: #ecf0f1;  
+  transition: background-color .3s;
+  margin: 5px auto;
+  width: 100%;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #0186D4;
+}
+
+.btn > * {
+  position: relative;
+}
+
+.btn span {
+  display: block;
+  padding: 5px 10px;
+}
+
+.btn:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0;
+  padding-top: 0;
+  border-radius: 100%;
+  background-color: rgba(236, 240, 241, .3);
+  transform: translate(-50%, -50%);
+}
+
+.btn:active:before {
+  width: 120%;
+  padding-top: 120%;
+  transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+/* Styles, not important */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+a, a:hover {
+  text-decoration: none;
 }
