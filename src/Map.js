@@ -7,7 +7,7 @@ const VenueMarker = ({ rating = '-', tier, ratingColor, name, tag, formattedAddr
     <span className='venue-tier'>{new Array(tier).fill('$').join(' ')}</span>
     <span className='bottom-arrow' style={{ borderTopColor: '#' + ratingColor }}></span>
     <div className='marker-details'>
-      <a href={url} className='venue-name'>{name}</a>
+      <a href={url} target='_blank' className='venue-name'>{name}</a>
       <p className='venue-tag'>{tag}</p>
       <div className='marker-detail-content'>
         <div className='left-content'>

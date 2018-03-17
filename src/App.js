@@ -21,7 +21,6 @@ class App extends Component {
     utils.fetchVenues({lat, lng, radius})
       .then((venues) => {
         this.setState({ venues, loaderVisibility: false});
-        console.log('hehehhe', venues);
       })
    }
 
@@ -30,7 +29,6 @@ class App extends Component {
       const currentLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
       this.setState({ currentLocation});
       this.findNearbyVenues(currentLocation);
-      console.log('position', position);
     }, (err) => {
       alert('Error fetching Location \n' + err.message);
     } );
