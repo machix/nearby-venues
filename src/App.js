@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     venues: [],
     radius: '250',
-    currentLocation: { lat: 13.7563, lng: 100.5018},
+    currentLocation: {},
     loaderVisibility: false,
     zoom: 17
   }
@@ -31,6 +31,10 @@ class App extends Component {
       .then((venues) => {
         this.setState({ venues, loaderVisibility: false});
       })
+      .catch(() => {
+        this.setState({ loaderVisibility: false });
+        alert('Error fetching venues');
+      })
    }
 
   componentDidMount() {
@@ -40,8 +44,7 @@ class App extends Component {
       this.findNearbyVenues(currentLocation);
     }, (err) => {
       alert('Error fetching Location \n' + err.message);
-    } );
-    this.findNearbyVenues({ lat: 13.7563, lng: 100.5018 });
+    });
   }
 
   changeRadius = (event) => {
@@ -59,11 +62,12 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
         </header>
         <p className="App-intro">
-          <code>Here are some things to do near you around{' '}
-            <select value={radius} onChange={this.changeRadius}>
-              {Object.keys(this.RADIUS_OPTIONS).map((radius) => <option key={radius} value={radius}>{radius} meters</option>)}
-            </select> 
-            {' '}meters. Tap on any marker to know more.</code>
+          <code>Here are some things to do near you. Tap on any marker to know more.</code>
+          <br/>
+          <code>Radius <select value={radius} onChange={this.changeRadius}>
+            {Object.keys(this.RADIUS_OPTIONS).map((radius) => <option key={radius} value={radius}>{radius} meters</option>)}
+            </select>
+          </code>
         </p>
         {currentLocation.lat && currentLocation.lng  ? 
           <Map center={currentLocation}

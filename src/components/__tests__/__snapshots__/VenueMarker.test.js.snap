@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="venue-marker"
+  style={
+    Object {
+      "backgroundColor": "#green",
+    }
+  }
+>
+  <span
+    className="venue-rating"
+  >
+    -
+  </span>
+  <span
+    className="venue-tier"
+  >
+    $ $ $ $
+  </span>
+  <span
+    className="bottom-arrow"
+    style={
+      Object {
+        "borderTopColor": "#green",
+      }
+    }
+  />
+  <div
+    className="marker-details"
+  >
+    <a
+      className="venue-name"
+      href="https://www.google.com/maps/?q=13.7563,100.5018"
+      target="_blank"
+    >
+      john doe
+    </a>
+    <p
+      className="venue-tag"
+    >
+      hotel
+    </p>
+    <div
+      className="marker-detail-content"
+    >
+      <div
+        className="left-content"
+      >
+        <p
+          className="venue-rating-detail"
+        >
+          Rating: 
+          -
+        </p>
+        <a
+          className="btn"
+          href="http://maps.google.com/?daddr=13.7563,100.5018"
+          target="_blank"
+          type="button"
+        >
+          <span>
+            Navigate
+          </span>
+        </a>
+        <a
+          className="btn"
+          href="tel:9812472772"
+          target="_blank"
+          type="button"
+        >
+          <span>
+            Call
+          </span>
+        </a>
+        <a
+          className="btn"
+          href="google.com"
+          target="_blank"
+          type="button"
+        >
+          <span>
+            Website
+          </span>
+        </a>
+      </div>
+      <div
+        className="address-container"
+      >
+        <p>
+          Address: 
+        </p>
+        <p
+          className="address-text"
+        >
+          hi
+        </p>
+        <p
+          className="address-text"
+        >
+          abc
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
