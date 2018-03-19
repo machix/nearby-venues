@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, Marker, withGoogleMap, withScriptjs, OverlayView } from "react-google-maps"
+import './VenueMarker.css';
 
 const VenueMarker = ({ rating = '-', tier, ratingColor, name, tag, formattedAddress, lat, lng, phone, url }) => (
   <div style={{ backgroundColor: '#' + ratingColor }} className='venue-marker'>
@@ -7,13 +7,14 @@ const VenueMarker = ({ rating = '-', tier, ratingColor, name, tag, formattedAddr
     <span className='venue-tier'>{new Array(tier).fill('$').join(' ')}</span>
     <span className='bottom-arrow' style={{ borderTopColor: '#' + ratingColor }}></span>
     <div className='marker-details'>
-      <a href={url} target='_blank' className='venue-name'>{name}</a>
+      <a href={`https://www.google.com/maps/?q=${lat},${lng}`} target='_blank' className='venue-name'>{name}</a>
       <p className='venue-tag'>{tag}</p>
       <div className='marker-detail-content'>
         <div className='left-content'>
           <p className='venue-rating-detail'>Rating: {rating}</p>
           <a target='_blank' href={`http://maps.google.com/?daddr=${lat},${lng}`} className="btn" type="button"><span>Navigate</span></a>
           <a target='_blank' href={`tel:${phone}`} className="btn" type="button"><span>Call</span></a>
+          <a target='_blank' href={url} className="btn" type="button"><span>Website</span></a>
         </div>
         <div className='address-container'>
           <p>Address: </p>
@@ -24,12 +25,4 @@ const VenueMarker = ({ rating = '-', tier, ratingColor, name, tag, formattedAddr
   </div>
 );
 
-const MapWithMarker = ({ center, venues, zoom }) => <GoogleMap clickableIcons={false} zoom={zoom} center={center}>
-  <Marker position={center} />
-  {venues.map((venue, i) => <OverlayView mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} key={i} position={venue} >
-    <VenueMarker {...venue} />
-  </OverlayView>)}
-</GoogleMap>
-
-
-export default withScriptjs(withGoogleMap(MapWithMarker));
+export default VenueMarker;

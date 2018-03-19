@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Map from './Map';
+import Map from './components/Map';
 import Loader from 'react-loader-spinner'
 import utils from './utils';
 
 class App extends Component {
   state = {
     venues: [],
-    radius: '500',
-    currentLocation: {},
-    loaderVisibility: false
+    radius: '250',
+    currentLocation: { lat: 13.7563, lng: 100.5018},
+    loaderVisibility: false,
+    zoom: 17
   }
 
-  RADIUS_OPTIONS = ['250', '500', '1000', '2000', '3000', '5000', '10000']
+  RADIUS_OPTIONS = {
+    '250': 17,
+    '500': 16,
+    '1000': 15.5,
+    '2000': 15,
+    '3000': 14.5,
+    '5000': 14.5,
+    '10000': 13.5,
+  }
 
   findNearbyVenues = ({lat, lng}) => {
     const {radius} = this.state;
@@ -32,38 +41,40 @@ class App extends Component {
     }, (err) => {
       alert('Error fetching Location \n' + err.message);
     } );
+    this.findNearbyVenues({ lat: 13.7563, lng: 100.5018 });
   }
 
   changeRadius = (event) => {
-    event.target.value && this.setState({ radius: event.target.value}, () => {
+    const radius = event.target.value;
+    event.target.value && this.setState({ radius, zoom: this.RADIUS_OPTIONS[radius]} , () => {
       this.findNearbyVenues(this.state.currentLocation);
     });
   }
 
   render() {
+    const { venues, radius, currentLocation, loaderVisibility, zoom} = this.state;
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <select className='radius-select' value={this.state.radius} onChange={this.changeRadius}>
-            {this.RADIUS_OPTIONS.map((radius, i) => <option key={i} value={radius}>{radius} meters</option>)}
-            <option></option>
-          </select>
         </header>
         <p className="App-intro">
-          <code>Here are some things to do near you. Tap on any marker to know more.</code>
+          <code>Here are some things to do near you around{' '}
+            <select value={radius} onChange={this.changeRadius}>
+              {Object.keys(this.RADIUS_OPTIONS).map((radius) => <option key={radius} value={radius}>{radius} meters</option>)}
+            </select> 
+            {' '}meters. Tap on any marker to know more.</code>
         </p>
-        {this.state.currentLocation.lat && this.state.currentLocation.lng  ? 
-          <Map center={this.state.currentLocation}
+        {currentLocation.lat && currentLocation.lng  ? 
+          <Map center={currentLocation}
             googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBPC0eaoaCqPztvybllCJV03d7J0uOricc"
             loadingElement={<div className='full-height'/>}
             containerElement={<div className='map-element' />}
-            venues={this.state.venues}
-            zoom={16}
+            venues={venues} zoom={zoom}
             mapElement={<div className='full-height' />}></Map> :
           <code>Fetching your location...</code>
         }
-        {this.state.loaderVisibility ? <div className='loader'>
+        {loaderVisibility ? <div className='loader'>
           <Loader type="Bars" color="white" height="100" width="100"/>
         </div> : null}
       </div>
