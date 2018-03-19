@@ -27,7 +27,7 @@ class App extends Component {
   findNearbyVenues = ({lat, lng}) => {
     const {radius} = this.state;
     this.setState({ loaderVisibility: true});
-    utils.fetchVenues({lat, lng, radius})
+    return utils.fetchVenues({lat, lng, radius})
       .then((venues) => {
         this.setState({ venues, loaderVisibility: false});
       })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders without crashing 1`] = `
+exports[`App.js: contains logic of fetching data renders correctly 1`] = `
 <div
   className="App"
 >

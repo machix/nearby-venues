@@ -7,7 +7,7 @@ it('renders without crashing', () => {
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBPC0eaoaCqPztvybllCJV03d7J0uOricc",
     loadingElement:< div className='full-height' />,
     containerElement : < div className = 'map-element' />,
-    venues :  [],
+    venues :  ['venue'],
     zoom: 10,
     mapElement : < div className = 'full-height' />
   }

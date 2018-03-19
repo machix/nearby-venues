@@ -11,7 +11,12 @@ window.requestAnimationFrame = () => {
 };
 window.navigator = {}
 window.navigator.geolocation = {
-    getCurrentPosition: jest.fn()
+    getCurrentPosition: jest.fn((success) => success({
+        coords: {
+            latitude: 13.7563,
+            longitude: 100.5018
+        }
+    }))
 }
 
 window.fetch = jest.fn(() => ({
